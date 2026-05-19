@@ -1,0 +1,41 @@
+{
+  "package_validation": {
+    "swift_test": {
+      "status": "passed"
+    },
+    "swift_build": {
+      "status": "passed"
+    }
+  },
+  "sample_project": {
+    "generator": "xcodegen",
+    "project": "Demo/WireStubDemo/WireStubDemo.xcodeproj",
+    "simulator_destination": {
+      "id": "28425279-095C-4D48-B328-748935D117DD",
+      "name": "iPhone 16",
+      "os": "18.2"
+    },
+    "build_for_testing": {
+      "status": "passed"
+    },
+    "test_without_building": {
+      "status": "passed"
+    }
+  },
+  "ui_tests": [
+    {
+      "name": "testInlineScenarioDrivesLoginRefreshFlow",
+      "status": "passed"
+    },
+    {
+      "name": "testHARScenarioDrivesLoginRefreshFlow",
+      "status": "passed"
+    }
+  ],
+  "architecture_guards": [
+    {
+      "name": "testSampleAppDoesNotImportWireStubModules",
+      "status": "passed"
+    }
+  ]
+}

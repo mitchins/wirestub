@@ -1,0 +1,61 @@
+{
+  "swift_test": {
+    "status": "passed",
+    "executed": 210,
+    "failures": 0
+  },
+  "new_regression_tests": {
+    "WireStubCoreTests": [
+      "testQueryExactDistinguishesDuplicateQueryItems",
+      "testQuerySubsetRequiresExpectedDuplicateQueryItems",
+      "testQuerySubsetAllowsAdditionalDuplicateQueryItems",
+      "testStubScenarioMatchingPolicyControlsMatching",
+      "testScenarioMatchingPolicyCanRequireCanonicalJSONBodyHash",
+      "testScenarioMatchingPolicyCanUseHeaderSubsetWhenOptedIn",
+      "testHeaderMatchingIsCaseInsensitive",
+      "testSensitiveQueryRedactionRedactsAllDuplicateTokenKeys",
+      "testRenderedMismatchReasonsRedactSensitiveHeaderValues",
+      "testJournalRenderedTimelineRedactsSensitiveValues"
+    ],
+    "WireStubHARTests": [
+      "testHARParserDoesNotCrashOnDuplicateHeaders",
+      "testHARImportPreservesDuplicateQueryItems",
+      "testHARValidationWarningsDoNotLeakSensitiveValues",
+      "testSensitiveHeaderPolicyWarnProducesStructuredWarnings",
+      "testSensitiveHeaderPolicyWarnWarningsDoNotLeakValues",
+      "testSensitiveHeaderPolicyStripRemovesSensitiveHeaders",
+      "testSensitiveHeaderPolicyFailThrows"
+    ],
+    "WireStubServerTests": [
+      "testServerUnmatchedDiagnosticBodyRedactsAuthorizationCookieAndTokenQuery",
+      "testServerRequestAdapterDoesNotCrashOnDuplicateHeaders",
+      "testRedactionAppliesToDuplicateSensitiveHeaders",
+      "testServerHonorsStubResponseDelay",
+      "testStartReturnsOnlyWhenServerAcceptsRequests",
+      "testStopAwaitsTeardownAndPortStopsAcceptingRequests",
+      "testStopIsIdempotent",
+      "testStartStopRepeatedlyDoesNotLeakPorts",
+      "testServerCanRestartOrThrowsPredictablyAfterStop"
+    ],
+    "WireStubURLProtocolTests": [
+      "testURLProtocolUnmatchedDiagnosticBodyRedactsSensitiveValues",
+      "testURLProtocolHonorsStubResponseDelay",
+      "testCoreServerURLProtocolDelayParity",
+      "testURLProtocolInstallationCanBeInvalidated",
+      "testURLProtocolRegistryDoesNotRetainInvalidatedEngine",
+      "testURLProtocolStateDoesNotLeakAfterInvalidation",
+      "testSeparateURLProtocolInstallationsRemainIsolatedAfterCleanup"
+    ],
+    "WireStubXCTestSupportTests": [
+      "testConfigureAppBeforeServerStartThrowsUsefulError",
+      "testConfigureAppAfterServerStartInjectsRealPort",
+      "testConfigureAppNeverInjectsPortZero",
+      "testAssertScenarioCompletePassesWhenAllOrderedRoutesConsumed",
+      "testAssertScenarioCompleteFailsWhenOrderedRouteUnconsumed",
+      "testAssertScenarioCompleteTracksRepeatedIdenticalRoutesByRouteID",
+      "testAssertScenarioCompleteThrowsClearErrorForFirstMatch",
+      "testAssertScenarioCompleteHandlesSequenceRoutesDeterministically",
+      "testXCTestFailureMessagesRedactSensitiveValues"
+    ]
+  }
+}

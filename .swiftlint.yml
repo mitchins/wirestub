@@ -1,0 +1,32 @@
+disabled_rules:
+  - line_length
+  - nesting
+  - cyclomatic_complexity
+  - function_body_length
+  - type_body_length
+  - file_length
+  - identifier_name
+  - opening_brace
+  - comment_spacing
+  - comma
+  - colon
+  - trailing_comma
+  - closure_parameter_position
+  - non_optional_string_data_conversion
+  - optional_data_string_conversion
+  - todo
+  - large_tuple
+  - implicit_optional_initialization
+  - vertical_whitespace
+  - vertical_whitespace_opening_braces
+  - vertical_whitespace_closing_braces
+  - weak_delegate
+  - class_delegate_protocol
+  - trailing_whitespace
+  - force_try
+  - force_cast
+  - static_over_final_class
+excluded:
+  - .build
+  - reports
+  - Demo/WireStubDemo/WireStubDemo.xcodeproj

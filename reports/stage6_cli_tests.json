@@ -1,0 +1,57 @@
+{
+  "swift_test": {
+    "status": "passed",
+    "executed": 226,
+    "failures": 0
+  },
+  "cli_target": {
+    "name": "wirestub",
+    "build_status": "passed"
+  },
+  "new_tests": {
+    "WireStubCLITests": [
+      "testInspectPrintsEntryCountMethodsAndPaths",
+      "testInspectDoesNotPrintSensitiveValues",
+      "testInspectFailsForMissingFile",
+      "testInspectFailsForMalformedHAR",
+      "testValidatePassesForValidHAR",
+      "testValidateReportsSensitiveWarningsWithoutValues",
+      "testValidateStrictFailsOnWarnings",
+      "testValidateFailsForMalformedHAR",
+      "testSanitizeWritesLoadableHAR",
+      "testSanitizeRemovesAuthorizationCookieAndSetCookie",
+      "testSanitizeRedactsSensitiveQueryItems",
+      "testSanitizeRedactsSensitiveJSONKeys",
+      "testSanitizePreservesNonSensitiveEntries",
+      "testSanitizeDoesNotPrintSensitiveValues",
+      "testSanitizeDoesNotOverwriteInputByDefault"
+    ],
+    "WireStubArchitectureTests": [
+      "testWireStubCLIDoesNotImportServerURLProtocolOrXCTest"
+    ]
+  },
+  "commands": {
+    "inspect": {
+      "arguments": ["<file.har>"]
+    },
+    "validate": {
+      "arguments": ["<file.har>"],
+      "options": ["--strict"]
+    },
+    "sanitize": {
+      "arguments": ["<input.har>", "<output.har>"],
+      "options": [
+        "--remove-header <name>",
+        "--redact-query <name>",
+        "--redact-json-key <name>"
+      ]
+    }
+  },
+  "exit_codes": {
+    "0": "success",
+    "1": "strict validation warning failure",
+    "65": "HAR data error or normalization failure",
+    "66": "input file not found",
+    "73": "output write failure or overwrite refusal"
+  }
+}

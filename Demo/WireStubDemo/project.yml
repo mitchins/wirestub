@@ -1,0 +1,60 @@
+name: WireStubDemo
+options:
+  bundleIdPrefix: com.github.mitchins.wirestubdemo
+  deploymentTarget:
+    iOS: "16.0"
+packages:
+  WireStub:
+    path: ../..
+targets:
+  WireStubDemo:
+    type: application
+    platform: iOS
+    sources:
+      - path: WireStubDemo
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.github.mitchins.wirestubdemo.app
+        PRODUCT_NAME: WireStubDemo
+        SWIFT_VERSION: 5.0
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: WireStubDemo
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        CODE_SIGNING_ALLOWED: NO
+        TARGETED_DEVICE_FAMILY: "1"
+        SUPPORTS_MACCATALYST: NO
+  WireStubDemoUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: WireStubDemoUITests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.github.mitchins.wirestubdemo.uitests
+        PRODUCT_NAME: WireStubDemoUITests
+        SWIFT_VERSION: 5.0
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: WireStubDemo
+        CODE_SIGNING_ALLOWED: NO
+        TARGETED_DEVICE_FAMILY: "1"
+        SUPPORTS_MACCATALYST: NO
+    dependencies:
+      - target: WireStubDemo
+      - package: WireStub
+        product: WireStubCore
+      - package: WireStub
+        product: WireStubHAR
+      - package: WireStub
+        product: WireStubServer
+      - package: WireStub
+        product: WireStubXCTest
+schemes:
+  WireStubDemo:
+    build:
+      targets:
+        WireStubDemo: all
+        WireStubDemoUITests: [test]
+    test:
+      targets:
+        - name: WireStubDemoUITests

@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:wirestub}",
+            "name": "Debug wirestub",
+            "target": "wirestub",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug wirestub"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:wirestub}",
+            "name": "Release wirestub",
+            "target": "wirestub",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release wirestub"
+        }
+    ]
+}

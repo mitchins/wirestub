@@ -1,0 +1,103 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  sonarqube:
+    name: SonarQube
+    runs-on: macos-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: SwiftLint
+        run: swiftlint lint --config .swiftlint.yml Sources Tests Demo/WireStubDemo/WireStubDemo Package.swift --quiet
+
+      - name: Swift build
+        run: swift build
+
+      - name: Swift test with coverage
+        env:
+          LLVM_PROFILE_FILE: coverage/%m.profraw
+        run: |
+          mkdir -p coverage
+          swift test --enable-code-coverage
+
+      - name: Generate Sonar coverage XML
+        run: |
+          set -euo pipefail
+          mkdir -p coverage
+
+          PROF_DATA="$(find .build -path '*/debug/codecov/default.profdata' -type f | sort | head -n 1)"
+          TEST_BUNDLE="$(find .build -name '*.xctest' -type d | sort | head -n 1)"
+
+          if [ -z "$PROF_DATA" ] || [ ! -f "$PROF_DATA" ]; then
+            echo "Missing Swift coverage profile" >&2
+            exit 1
+          fi
+          if [ -z "$TEST_BUNDLE" ] || [ ! -d "$TEST_BUNDLE" ] || [[ "$TEST_BUNDLE" != *.xctest ]]; then
+            echo "Missing Swift test bundle" >&2
+            exit 1
+          fi
+
+          TEST_BINARY="$TEST_BUNDLE/Contents/MacOS/$(basename "$TEST_BUNDLE" .xctest)"
+          LCOV_FILE="coverage/coverage.lcov"
+
+          xcrun llvm-cov export \
+            "$TEST_BINARY" \
+            -instr-profile "$PROF_DATA" \
+            -format=lcov \
+            -ignore-filename-regex='/(Tests|Demo|\\.build)/' \
+            > "$LCOV_FILE"
+
+          python3 - "$LCOV_FILE" "coverage/sonar-coverage.xml" <<'PY'
+          import os
+          import sys
+          import xml.etree.ElementTree as ET
+
+          lcov_path = sys.argv[1]
+          xml_path = sys.argv[2]
+          repo_root = os.getcwd()
+
+          files = {}
+          current_path = None
+
+          with open(lcov_path, "r", encoding="utf-8") as handle:
+              for raw_line in handle:
+                  line = raw_line.strip()
+                  if line.startswith("SF:"):
+                      current_path = line[3:]
+                      if os.path.isabs(current_path):
+                          current_path = os.path.relpath(current_path, repo_root)
+                      files.setdefault(current_path, {})
+                  elif line.startswith("DA:") and current_path is not None:
+                      line_no, hits = line[3:].split(",", 1)
+                      files[current_path][int(line_no)] = int(hits)
+                  elif line == "end_of_record":
+                      current_path = None
+
+          coverage = ET.Element("coverage", version="1")
+          for path in sorted(files):
+              file_element = ET.SubElement(coverage, "file", path=path)
+              for line_no in sorted(files[path]):
+                  ET.SubElement(
+                      file_element,
+                      "lineToCover",
+                      lineNumber=str(line_no),
+                      covered="true" if files[path][line_no] > 0 else "false",
+                  )
+
+          ET.ElementTree(coverage).write(xml_path, encoding="utf-8", xml_declaration=True)
+          PY
+      - name: SonarQube Scan
+        if: ${{ env.SONAR_TOKEN != '' }}
+        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0

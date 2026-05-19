@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  swift-package:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build package
+        run: swift build
+      - name: Test package
+        run: swift test
+
+  demo-build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate demo project
+        run: |
+          cd Demo/WireStubDemo
+          xcodegen generate
+      - name: Test demo on iOS Simulator
+        run: |
+          xcodebuild \
+            -project Demo/WireStubDemo/WireStubDemo.xcodeproj \
+            -scheme WireStubDemo \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            test
